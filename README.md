@@ -4,6 +4,8 @@ avr programming and arduino programming
 
 ## Hardware Connections
 
+### 1. BUZZER
+
 | Component       | Pin on ATmega328P | Arduino Pin | Connection |
 |-----------------|-----------------|------------|---------------|
 | Passive Buzzer + | PB0             | D8         | Connect here |
