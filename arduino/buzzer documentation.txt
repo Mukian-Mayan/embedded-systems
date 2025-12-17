@@ -1,0 +1,144 @@
+# Arduino Buzzer Programming Documentation
+
+## 1. Introduction
+
+A piezo buzzer generates sound when voltage is applied at varying frequencies. Using Arduino, you can play melodies, sirens, and sound effects by controlling the **frequency (Hz)** and **duration (ms)**.
+
+Function used:
+
+```cpp
+tone(pin, frequency, duration);
+```
+
+* **pin**: Arduino pin connected to the buzzer
+* **frequency**: in Hertz (Hz), pitch of the note
+* **duration**: in milliseconds (ms), optional
+
+Stop a tone:
+
+```cpp
+noTone(pin);
+```
+
+## 2. Musical Notes and Frequencies
+
+| Note | Frequency (Hz) |
+| ---- | -------------- |
+| C4   | 262            |
+| D4   | 294            |
+| E4   | 330            |
+| F4   | 349            |
+| G4   | 392            |
+| A4   | 440            |
+| B4   | 494            |
+| C5   | 523            |
+
+## 3. Representing Notes in Code
+
+### Option A: Direct Frequencies
+
+```cpp
+int melody[] = {262, 294, 330, 349, 392};
+int duration[] = {500, 500, 500, 500, 500};
+```
+
+### Option B: Named Constants
+
+```cpp
+#define NOTE_C4 262
+#define NOTE_D4 294
+#define NOTE_E4 330
+int melody[] = {NOTE_C4, NOTE_D4, NOTE_E4};
+```
+
+## 4. Note Durations
+
+* Quarter note: 500 ms
+* Eighth note: 250 ms
+* Half note: 1000 ms
+* Whole note: 2000 ms
+
+```cpp
+int duration[] = {500, 500, 1000};
+```
+
+## 5. Playing Melodies
+
+```cpp
+for(int i = 0; i < 3; i++) {
+    tone(BUZZER, melody[i], duration[i]);
+    delay(duration[i] + 50);
+}
+```
+
+* `delay` ensures notes don’t overlap.
+
+## 6. Creating Rests
+
+Use `0` for silence:
+
+```cpp
+int melody[] = {262, 0, 330};
+```
+
+Handle in code:
+
+```cpp
+if(melody[i] == 0) noTone(BUZZER);
+else tone(BUZZER, melody[i], duration[i]);
+```
+
+## 7. Advanced Patterns
+
+### 7.1 Smooth Frequency Sweep (Siren)
+
+```cpp
+for(int freq = 600; freq <= 1200; freq += 5) {
+    tone(BUZZER, freq);
+    delay(4);
+}
+for(int freq = 1200; freq >= 600; freq -= 5) {
+    tone(BUZZER, freq);
+    delay(4);
+}
+```
+
+### 7.2 Dual-Tone Sirens
+
+```cpp
+sweepSiren(600, 1200);
+sweepSiren(800, 1400);
+```
+
+## 8. Pro Tips
+
+1. Use arrays for notes and durations.
+2. Comment your code.
+3. Modularize: functions for melodies and sirens.
+4. Test single notes before sequences.
+5. Adjust delay and step for realism.
+6. Optional: combine LEDs with buzzer.
+
+## 9. Example: Jingle Bells
+
+```cpp
+#define BUZZER 8
+int melody[] = {330, 330, 330, 330, 330, 330, 330, 392, 261, 294, 330};
+int duration[] = {400,400,800,400,400,800,400,400,400,400,800};
+void setup(){ pinMode(BUZZER, OUTPUT); }
+void loop(){
+  for(int i=0; i<11; i++){
+    if(melody[i]==0) noTone(BUZZER);
+    else tone(BUZZER, melody[i], duration[i]);
+    delay(duration[i]+50);
+  }
+  delay(1000);
+}
+```
+
+## 10. Summary
+
+| Concept   | Implementation                  |
+| --------- | ------------------------------- |
+| Notes     | Hz values (direct or constants) |
+| Durations | Array of ms values              |
